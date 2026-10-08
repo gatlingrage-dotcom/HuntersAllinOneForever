@@ -1,0 +1,24 @@
+## Interface: 16001
+## Title: HuntersAllinOneForever
+## Notes: All-in-one UI dashboard, WeakAuras asset templates, and gear optimization journal for WoW Forever Hunters.
+## Author: MeiaDeLeite
+## Version: 1.0.0
+## SavedVariables: HAOF_Settings
+
+
+# Core Architecture Namespaces & Calculators
+src\localization.lua
+src\settings.lua
+src\macro_space_handler.lua
+src\pet_training_calculator.lua
+src\pet_ability_matrix.lua
+src\pet_feeding_manager.lua
+src\hawk_tracker_logic.lua
+src\hunter_cooldown_tracker.lua
+
+# User Interface Displays & Monitors
+src\hunter_companion_window.lua
+src\ammo_alert_module.lua
+
+# Main Engine Entry Point Launcher
+HuntersAllinOneForever.lua
