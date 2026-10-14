@@ -546,6 +546,8 @@ function HunterCompanionWindow:CreateJournalWindow()
     local frame = CreateFrame("Frame", "HuntersAllinOneForever_Journal", UIParent, "BackdropTemplate")
     frame:SetSize(700, 640)
     frame:SetPoint("CENTER", UIParent, "CENTER")
+    frame:SetFrameStrata("DIALOG")
+    frame:SetClampedToScreen(true)
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:RegisterForDrag("LeftButton")
@@ -557,9 +559,37 @@ function HunterCompanionWindow:CreateJournalWindow()
         if Settings and Settings.SaveWindowPosition then Settings:SaveWindowPosition(self) end
     end)
 
-    frame:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8X8", edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", tile = true, tileSize = 16, edgeSize = 16, insets = { left = 5, right = 5, top = 5, bottom = 5 } })
-    frame:SetBackdropColor(0.12, 0.065, 0.035, 1)
-    frame:SetBackdropBorderColor(0.67, 0.43, 0.16, 1)
+    frame:SetBackdrop({
+        bgFile = "Interface\\FrameGeneral\\UI-Background-Rock",
+        edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
+        tile = true,
+        tileSize = 16,
+        edgeSize = 24,
+        insets = { left = 6, right = 6, top = 6, bottom = 6 },
+    })
+    frame:SetBackdropColor(0.045, 0.042, 0.037, 0.99)
+    frame:SetBackdropBorderColor(0.68, 0.52, 0.20, 0.85)
+
+    local headerBand = frame:CreateTexture(nil, "BACKGROUND")
+    headerBand:SetTexture("Interface\\Buttons\\WHITE8X8")
+    headerBand:SetPoint("TOPLEFT", frame, "TOPLEFT", 12, -10)
+    headerBand:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -12, -10)
+    headerBand:SetHeight(37)
+    headerBand:SetColorTexture(0.14, 0.10, 0.055, 0.96)
+
+    local headerTopLine = frame:CreateTexture(nil, "ARTWORK")
+    headerTopLine:SetTexture("Interface\\Buttons\\WHITE8X8")
+    headerTopLine:SetPoint("TOPLEFT", headerBand, "TOPLEFT")
+    headerTopLine:SetPoint("TOPRIGHT", headerBand, "TOPRIGHT")
+    headerTopLine:SetHeight(1)
+    headerTopLine:SetColorTexture(0.68, 0.52, 0.20, 0.65)
+
+    local headerBottomLine = frame:CreateTexture(nil, "ARTWORK")
+    headerBottomLine:SetTexture("Interface\\Buttons\\WHITE8X8")
+    headerBottomLine:SetPoint("BOTTOMLEFT", headerBand, "BOTTOMLEFT")
+    headerBottomLine:SetPoint("BOTTOMRIGHT", headerBand, "BOTTOMRIGHT")
+    headerBottomLine:SetHeight(1)
+    headerBottomLine:SetColorTexture(0.68, 0.52, 0.20, 0.45)
 
     local pageLeft = frame:CreateTexture(nil, "BACKGROUND")
     pageLeft:SetTexture("Interface\\Buttons\\WHITE8X8")
