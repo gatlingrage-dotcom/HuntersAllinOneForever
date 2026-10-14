@@ -2,8 +2,8 @@
 
 Notable changes to HuntersAllinOneForever are listed here.
 
-## Unreleased
-
+## 14/10/2026
+Release 1.0.0
 ### Added
 - Automatic English, Portuguese (Portugal), French, German, Italian, and Japanese interface localization.
 - Language selector with automatic game-language detection, English fallback, and saved manual selection.
