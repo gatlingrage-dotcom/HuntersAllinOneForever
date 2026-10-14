@@ -16,6 +16,9 @@ Notable changes to HuntersAllinOneForever are listed here.
 - Ammunition alerts and an ammunition guide in the Companion Record.
 
 ### Changed
+- Restyled the journal window after ForeverDungeonJournal: dark stone frame, gold-trimmed header, landscape 850x590 size, and two bordered pages.
+- Realigned the Options, Macros, Gear, and Pet Skills pages to the new page layout, with per-tab headings and the ammunition footer shown only on Gear.
+- Extended the Pet Skills scroll area down to the bottom of the page.
 - Expanded the Companion Journal and content panels to give translated text more room.
 - Reworked the Options page with checkboxes for tracker visibility and abilities, plus opacity controls.
 - Updated the Companion Record layout and pet XP display.
