@@ -371,17 +371,17 @@ function HunterCompanionWindow:RefreshMacroPage(container)
         local isCurrent = injected and macroName == data.Name and macroBody == data.Body
         local column = math.floor((i - 1) / 9)
         local row = (i - 1) % 9
-        local columnOffset = column * 282
+        local columnOffset = column * 380
         local yOffset = -(row * 35) - 31
 
         local checkbox = CreateFrame("CheckButton", nil, container, "UICheckButtonTemplate")
         checkbox:SetSize(24, 24)
-        checkbox:SetPoint("TOPLEFT", container, "TOPLEFT", columnOffset + 248, yOffset + 1)
+        checkbox:SetPoint("TOPLEFT", container, "TOPLEFT", columnOffset + 340, yOffset + 1)
         checkbox:SetChecked(isCurrent)
 
         local lbl = container:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
         lbl:SetPoint("TOPLEFT", container, "TOPLEFT", columnOffset, yOffset)
-        lbl:SetWidth(240)
+        lbl:SetWidth(330)
         local statusText = not injected and "|cFF888888" .. T("[Not added]") .. "|r"
             or (isCurrent and "|cFF00FF00" .. T("[Added]") .. "|r"
                 or "|cFFFFCC00" .. T("[Update available]") .. "|r")
@@ -544,8 +544,8 @@ end
 
 function HunterCompanionWindow:CreateJournalWindow()
     local frame = CreateFrame("Frame", "HuntersAllinOneForever_Journal", UIParent, "BackdropTemplate")
-    frame:SetSize(700, 640)
-    frame:SetPoint("CENTER", UIParent, "CENTER")
+    frame:SetSize(850, 590)
+    frame:SetPoint("CENTER", UIParent, "CENTER", 0, 10)
     frame:SetFrameStrata("DIALOG")
     frame:SetClampedToScreen(true)
     frame:SetMovable(true)
@@ -593,21 +593,36 @@ function HunterCompanionWindow:CreateJournalWindow()
 
     local pageLeft = frame:CreateTexture(nil, "BACKGROUND")
     pageLeft:SetTexture("Interface\\Buttons\\WHITE8X8")
-    pageLeft:SetPoint("TOPLEFT", frame, "TOPLEFT", 26, -47)
-    pageLeft:SetSize(315, 494)
-    pageLeft:SetVertexColor(0.29, 0.20, 0.12, 1)
+    pageLeft:SetPoint("TOPLEFT", frame, "TOPLEFT", 22, -52)
+    pageLeft:SetSize(390, 445)
+    pageLeft:SetVertexColor(0.17, 0.12, 0.07, 1)
 
     local pageRight = frame:CreateTexture(nil, "BACKGROUND")
     pageRight:SetTexture("Interface\\Buttons\\WHITE8X8")
     pageRight:SetPoint("TOPLEFT", pageLeft, "TOPRIGHT", 8, 0)
-    pageRight:SetSize(315, 494)
-    pageRight:SetVertexColor(0.29, 0.20, 0.12, 1)
+    pageRight:SetSize(390, 445)
+    pageRight:SetVertexColor(0.17, 0.12, 0.07, 1)
 
     local pageGutter = frame:CreateTexture(nil, "BACKGROUND")
     pageGutter:SetTexture("Interface\\Buttons\\WHITE8X8")
     pageGutter:SetPoint("TOPLEFT", pageLeft, "TOPRIGHT")
-    pageGutter:SetSize(8, 494)
-    pageGutter:SetVertexColor(0.11, 0.065, 0.035, 0.85)
+    pageGutter:SetSize(8, 445)
+    pageGutter:SetVertexColor(0.07, 0.05, 0.03, 0.95)
+
+    local function AddPageBorder(page)
+        local border = CreateFrame("Frame", nil, frame, "BackdropTemplate")
+        border:SetPoint("TOPLEFT", page, "TOPLEFT")
+        border:SetPoint("BOTTOMRIGHT", page, "BOTTOMRIGHT")
+        border:SetFrameLevel(frame:GetFrameLevel() + 1)
+        border:SetBackdrop({
+            edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+            edgeSize = 12,
+            insets = { left = 2, right = 2, top = 2, bottom = 2 },
+        })
+        border:SetBackdropBorderColor(0.47, 0.34, 0.16, 0.9)
+    end
+    AddPageBorder(pageLeft)
+    AddPageBorder(pageRight)
 
     local headerText = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     headerText:SetPoint("TOP", frame, "TOP", 0, -10)
@@ -632,13 +647,13 @@ function HunterCompanionWindow:CreateJournalWindow()
     brandIconBorder:SetPoint("CENTER", brandIcon, "CENTER", 0, 0)
 
     local gearContainer = CreateFrame("Frame", nil, frame)
-    gearContainer:SetSize(285, 390)
+    gearContainer:SetSize(350, 340)
     gearContainer:SetPoint("TOPLEFT", frame, "TOPLEFT", 40, -80)
     frame.GearContainer = gearContainer
 
     local ammoFooter = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    ammoFooter:SetPoint("TOPLEFT", frame, "TOPLEFT", 40, -540)
-    ammoFooter:SetSize(620, 38)
+    ammoFooter:SetPoint("TOPLEFT", frame, "TOPLEFT", 40, -438)
+    ammoFooter:SetSize(350, 38)
     ammoFooter:SetJustifyH("LEFT")
     ammoFooter:SetJustifyV("TOP")
     ammoFooter:SetTextColor(1, 0.91, 0.75)
@@ -651,7 +666,7 @@ function HunterCompanionWindow:CreateJournalWindow()
     local CooldownTracker = HAOF.HunterCooldownTracker
 
     local optionsContainer = CreateFrame("Frame", nil, frame)
-    optionsContainer:SetSize(620, 475)
+    optionsContainer:SetSize(770, 440)
     optionsContainer:SetPoint("TOPLEFT", frame, "TOPLEFT", 40, -80)
     optionsContainer:Hide()
     frame.OptionsContainer = optionsContainer
@@ -666,13 +681,13 @@ function HunterCompanionWindow:CreateJournalWindow()
         heading:SetText("|cFFFFD100" .. title .. "|r")
     end
     CreateOptionSection(T("AMMO ALERTS"), 0, -30)
-    CreateOptionSection(T("COOLDOWN TRACKER"), 280, -30)
+    CreateOptionSection(T("COOLDOWN TRACKER"), 390, -30)
     CreateOptionSection(T("HAWK TRACKER"), 0, -160)
 
     local sectionDivider = optionsContainer:CreateTexture(nil, "ARTWORK")
     sectionDivider:SetColorTexture(0.67, 0.43, 0.16, 0.65)
-    sectionDivider:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 268, -26)
-    sectionDivider:SetSize(1, 435)
+    sectionDivider:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 378, -26)
+    sectionDivider:SetSize(1, 390)
 
     local function CreateOptionToggle(labelText, getValue, setValue, x, y, width, isAvailable)
         local label = optionsContainer:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
@@ -822,16 +837,16 @@ function HunterCompanionWindow:CreateJournalWindow()
     local hawkOpacityLabel = optionsContainer:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     hawkOpacityLabel:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 0, -252)
     hawkOpacityLabel:SetText(T("Hawk window opacity:"))
-    hawkOpacityLabel:SetWidth(220)
+    hawkOpacityLabel:SetWidth(170)
 
     local hawkOpacityValue = optionsContainer:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    hawkOpacityValue:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 175, -252)
+    hawkOpacityValue:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 195, -252)
     hawkOpacityValue:SetJustifyH("RIGHT")
     hawkOpacityValue:SetWidth(55)
 
     local hawkOpacitySlider = CreateFrame("Slider", nil, optionsContainer)
     hawkOpacitySlider:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 0, -274)
-    hawkOpacitySlider:SetSize(240, 26)
+    hawkOpacitySlider:SetSize(340, 26)
     hawkOpacitySlider:SetOrientation("HORIZONTAL")
     hawkOpacitySlider:SetMinMaxValues(0, 100)
     hawkOpacitySlider:SetValueStep(1)
@@ -859,12 +874,13 @@ function HunterCompanionWindow:CreateJournalWindow()
         local opacity = math.max(0, math.min(100, math.floor(tonumber(settings.HawkTracker.WindowOpacity) or 94)))
         hawkOpacitySlider:SetValue(opacity)
         hawkOpacityValue:SetText(opacity .. "%")
-        sliderFill:SetWidth(math.max(1, 238 * opacity / 100))
+        sliderFill:SetWidth(math.max(1, 338 * opacity / 100))
     end
     hawkOpacitySlider:SetScript("OnValueChanged", function(_, value)
         value = math.max(0, math.min(100, math.floor(value + 0.5)))
         settings.HawkTracker.WindowOpacity = value
         hawkOpacityValue:SetText(value .. "%")
+        sliderFill:SetWidth(math.max(1, 338 * value / 100))
         if HAOF.HawkTracker and HAOF.HawkTracker.SetWindowOpacity then
             HAOF.HawkTracker:SetWindowOpacity(value)
         end
@@ -878,21 +894,21 @@ function HunterCompanionWindow:CreateJournalWindow()
         if CooldownTracker and CooldownTracker.RefreshSeparateWindow then
             CooldownTracker:RefreshSeparateWindow()
         end
-    end, 280, -55, 260)
+    end, 390, -55, 350)
 
     local cooldownOpacityLabel = optionsContainer:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    cooldownOpacityLabel:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 280, -88)
+    cooldownOpacityLabel:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 390, -88)
     cooldownOpacityLabel:SetText(T("Cooldown window opacity:"))
-    cooldownOpacityLabel:SetWidth(220)
+    cooldownOpacityLabel:SetWidth(170)
 
     local cooldownOpacityValue = optionsContainer:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    cooldownOpacityValue:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 455, -88)
+    cooldownOpacityValue:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 565, -88)
     cooldownOpacityValue:SetJustifyH("RIGHT")
     cooldownOpacityValue:SetWidth(55)
 
     local cooldownOpacitySlider = CreateFrame("Slider", nil, optionsContainer)
-    cooldownOpacitySlider:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 280, -110)
-    cooldownOpacitySlider:SetSize(240, 26)
+    cooldownOpacitySlider:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 390, -110)
+    cooldownOpacitySlider:SetSize(320, 26)
     cooldownOpacitySlider:SetOrientation("HORIZONTAL")
     cooldownOpacitySlider:SetMinMaxValues(0, 100)
     cooldownOpacitySlider:SetValueStep(1)
@@ -920,13 +936,13 @@ function HunterCompanionWindow:CreateJournalWindow()
         local opacity = math.max(0, math.min(100, math.floor(tonumber(settings.CooldownTracker.WindowOpacity) or 94)))
         cooldownOpacitySlider:SetValue(opacity)
         cooldownOpacityValue:SetText(opacity .. "%")
-        cooldownSliderFill:SetWidth(math.max(1, 238 * opacity / 100))
+        cooldownSliderFill:SetWidth(math.max(1, 318 * opacity / 100))
     end
     cooldownOpacitySlider:SetScript("OnValueChanged", function(_, value)
         value = math.max(0, math.min(100, math.floor(value + 0.5)))
         settings.CooldownTracker.WindowOpacity = value
         cooldownOpacityValue:SetText(value .. "%")
-        cooldownSliderFill:SetWidth(math.max(1, 238 * value / 100))
+        cooldownSliderFill:SetWidth(math.max(1, 318 * value / 100))
         if CooldownTracker and CooldownTracker.SetWindowOpacity then
             CooldownTracker:SetWindowOpacity(value)
         end
@@ -941,10 +957,10 @@ function HunterCompanionWindow:CreateJournalWindow()
         else
             settings.CooldownTracker.WindowLocked = value
         end
-    end, 280, -153, 260)
+    end, 390, -153, 350)
 
     local abilitySettings = optionsContainer:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    abilitySettings:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 280, -184)
+    abilitySettings:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 390, -184)
     abilitySettings:SetText("|cFFFFD100" .. T("TRACKED ABILITIES") .. "|r")
     local refreshAbilityToggles = {}
     if CooldownTracker and CooldownTracker.GetAbilities then
@@ -956,7 +972,7 @@ function HunterCompanionWindow:CreateJournalWindow()
                 if CooldownTracker and CooldownTracker.RefreshSeparateWindow then
                     CooldownTracker:RefreshSeparateWindow()
                 end
-            end, 280, -208 - ((index - 1) * 24), 260, function()
+            end, 390, -208 - ((index - 1) * 24), 350, function()
                 return not CooldownTracker.IsAbilityKnown
                     or CooldownTracker:IsAbilityKnown(ability)
             end)
@@ -965,11 +981,11 @@ function HunterCompanionWindow:CreateJournalWindow()
     end
 
     local languageHeading = optionsContainer:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    languageHeading:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 0, -382)
+    languageHeading:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 0, -325)
     languageHeading:SetText("|cFFFFD100" .. T("LANGUAGE") .. "|r")
 
     local languageLabel = optionsContainer:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    languageLabel:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 0, -410)
+    languageLabel:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 0, -353)
     languageLabel:SetText(T("Language:"))
 
     local languageDropdown = CreateFrame(
@@ -978,7 +994,7 @@ function HunterCompanionWindow:CreateJournalWindow()
         optionsContainer,
         "UIDropDownMenuTemplate"
     )
-    languageDropdown:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 80, -395)
+    languageDropdown:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", -16, -370)
     UIDropDownMenu_SetWidth(languageDropdown, 170)
 
     local languageChoices = { "auto", "enUS", "ptPT", "frFR", "deDE", "itIT", "jaJP" }
@@ -1008,8 +1024,8 @@ function HunterCompanionWindow:CreateJournalWindow()
     RefreshLanguageDropdown()
 
     local languageHelp = optionsContainer:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-    languageHelp:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 0, -438)
-    languageHelp:SetWidth(520)
+    languageHelp:SetPoint("TOPLEFT", optionsContainer, "TOPLEFT", 0, -402)
+    languageHelp:SetWidth(350)
     languageHelp:SetJustifyH("LEFT")
     languageHelp:SetText(T("Type /reload after changing the language to apply it."))
 
@@ -1017,19 +1033,19 @@ function HunterCompanionWindow:CreateJournalWindow()
     infoText:SetPoint("TOPLEFT", gearContainer, "TOPLEFT", 0, 0)
     infoText:SetJustifyH("LEFT")
     infoText:SetJustifyV("TOP")
-    infoText:SetWidth(285)
-    infoText:SetHeight(390)
+    infoText:SetWidth(350)
+    infoText:SetHeight(340)
     infoText:SetTextColor(1, 0.91, 0.75)
     frame.InfoText = infoText
 
     local macroContainer = CreateFrame("Frame", nil, frame)
-    macroContainer:SetSize(564, 350)
+    macroContainer:SetSize(760, 340)
     macroContainer:SetPoint("TOPLEFT", frame, "TOPLEFT", 40, -85)
     macroContainer:Hide()
     frame.MacroContainer = macroContainer
 
     local petMatrixContainer = CreateFrame("Frame", nil, frame)
-    petMatrixContainer:SetSize(285, 390)
+    petMatrixContainer:SetSize(350, 405)
     petMatrixContainer:SetPoint("TOPLEFT", frame, "TOPLEFT", 40, -80)
     petMatrixContainer:Hide()
     frame.PetMatrixContainer = petMatrixContainer
@@ -1041,7 +1057,7 @@ function HunterCompanionWindow:CreateJournalWindow()
         "UIPanelScrollFrameTemplate"
     )
     petMatrixScrollFrame:SetPoint("TOPLEFT", petMatrixContainer, "TOPLEFT", 0, 0)
-    petMatrixScrollFrame:SetSize(285, 390)
+    petMatrixScrollFrame:SetSize(350, 405)
     frame.PetMatrixScrollFrame = petMatrixScrollFrame
 
     local petMatrixScrollBar = _G.HAOF_PetSkillsScrollFrameScrollBar
@@ -1052,32 +1068,32 @@ function HunterCompanionWindow:CreateJournalWindow()
     end
 
     local petMatrixContent = CreateFrame("Frame", nil, petMatrixScrollFrame)
-    petMatrixContent:SetSize(259, 390)
+    petMatrixContent:SetSize(324, 405)
     petMatrixScrollFrame:SetScrollChild(petMatrixContent)
 
     local petMatrixText = petMatrixContent:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     petMatrixText:SetPoint("TOPLEFT", petMatrixContent, "TOPLEFT", 0, 0)
     petMatrixText:SetJustifyH("LEFT")
     petMatrixText:SetJustifyV("TOP")
-    petMatrixText:SetWidth(259)
+    petMatrixText:SetWidth(324)
     petMatrixText:SetSpacing(2)
     petMatrixText:SetTextColor(1, 0.91, 0.75)
     frame.PetMatrixText = petMatrixText
     frame.PetMatrixContent = petMatrixContent
 
     local leftPageHeading = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    leftPageHeading:SetPoint("TOPLEFT", frame, "TOPLEFT", 40, -61)
+    leftPageHeading:SetPoint("TOPLEFT", frame, "TOPLEFT", 40, -65)
     leftPageHeading:SetText(T("FIELD NOTES"))
     leftPageHeading:SetTextColor(BOOK_GOLD[1], BOOK_GOLD[2], BOOK_GOLD[3])
 
     local rightPageHeading = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    rightPageHeading:SetPoint("TOPLEFT", frame, "TOPLEFT", 362, -61)
+    rightPageHeading:SetPoint("TOPLEFT", frame, "TOPLEFT", 435, -65)
     rightPageHeading:SetText(T("COMPANION RECORD"))
     rightPageHeading:SetTextColor(BOOK_GOLD[1], BOOK_GOLD[2], BOOK_GOLD[3])
 
     local petPortrait = frame:CreateTexture(nil, "ARTWORK")
     petPortrait:SetSize(64, 64)
-    petPortrait:SetPoint("TOPLEFT", frame, "TOPLEFT", 365, -82)
+    petPortrait:SetPoint("TOPLEFT", frame, "TOPLEFT", 438, -82)
     petPortrait:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
     frame.PetPortrait = petPortrait
 
@@ -1097,7 +1113,7 @@ function HunterCompanionWindow:CreateJournalWindow()
 
     local petIdentityText = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     petIdentityText:SetPoint("TOPLEFT", petPortrait, "TOPRIGHT", 12, -5)
-    petIdentityText:SetWidth(190)
+    petIdentityText:SetWidth(250)
     petIdentityText:SetJustifyH("LEFT")
     petIdentityText:SetJustifyV("TOP")
     petIdentityText:SetTextColor(1, 0.91, 0.75)
@@ -1105,13 +1121,13 @@ function HunterCompanionWindow:CreateJournalWindow()
 
     local petXPNameplateToggle = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
     petXPNameplateToggle:SetSize(145, 24)
-    petXPNameplateToggle:SetPoint("TOPLEFT", frame, "TOPLEFT", 532, -180)
+    petXPNameplateToggle:SetPoint("TOPLEFT", frame, "TOPLEFT", 605, -180)
     StyleJournalButton(petXPNameplateToggle)
     frame.PetXPNameplateToggle = petXPNameplateToggle
 
     local petXPBar = CreateFrame("StatusBar", nil, frame)
-    petXPBar:SetSize(285, 16)
-    petXPBar:SetPoint("TOPLEFT", frame, "TOPLEFT", 362, -158)
+    petXPBar:SetSize(350, 16)
+    petXPBar:SetPoint("TOPLEFT", frame, "TOPLEFT", 435, -158)
     petXPBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
     petXPBar:SetStatusBarColor(0.35, 0.18, 0.62, 1)
     petXPBar:SetMinMaxValues(0, 1)
@@ -1130,22 +1146,21 @@ function HunterCompanionWindow:CreateJournalWindow()
     frame.PetXPText = petXPText
 
     local petStatsText = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    petStatsText:SetPoint("TOPLEFT", frame, "TOPLEFT", 362, -374)
     petStatsText:SetJustifyH("LEFT")
     petStatsText:SetJustifyV("TOP")
-    petStatsText:SetWidth(285)
+    petStatsText:SetWidth(350)
     petStatsText:SetHeight(152)
     petStatsText:SetTextColor(1, 0.91, 0.75)
     frame.PetStatsText = petStatsText
 
     local petCalcText = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    petCalcText:SetPoint("TOPLEFT", frame, "TOPLEFT", 362, -211)
+    petCalcText:SetPoint("TOPLEFT", frame, "TOPLEFT", 435, -211)
     petCalcText:SetJustifyH("LEFT")
     petCalcText:SetJustifyV("TOP")
-    petCalcText:SetWidth(285)
-    petCalcText:SetHeight(156)
+    petCalcText:SetWidth(350)
     petCalcText:SetTextColor(1, 0.91, 0.75)
     frame.PetCalcText = petCalcText
+    petStatsText:SetPoint("TOPLEFT", petCalcText, "BOTTOMLEFT", 0, -12)
 
     local companionRecordElements = {
         rightPageHeading,
@@ -1320,45 +1335,56 @@ function HunterCompanionWindow:CreateJournalWindow()
         local MatrixEngine = HAOF.PetAbilityMatrix
         if MatrixEngine and MatrixEngine.GetPetFamilyText then
             frame.PetMatrixText:SetText(MatrixEngine:GetPetFamilyText())
-            frame.PetMatrixContent:SetHeight(math.max(340, frame.PetMatrixText:GetStringHeight() + 8))
+            frame.PetMatrixContent:SetHeight(math.max(405, frame.PetMatrixText:GetStringHeight() + 8))
             frame.PetMatrixScrollFrame:SetVerticalScroll(0)
         end
     end
 
     CreateFrame("Button", nil, frame, "UIPanelCloseButton"):SetPoint("TOPRIGHT", frame, "TOPRIGHT", -5, -5)
 
-    self:CreateSpecTab(frame, T("Gear Guide"), 103, -593, 110, function()
+    self:CreateSpecTab(frame, T("Gear Guide"), 178, -548, 110, function()
         frame.MacroContainer:Hide()
         frame.PetMatrixContainer:Hide()
         frame.OptionsContainer:Hide()
         frame.GearContainer:Show()
+        leftPageHeading:SetText(T("FIELD NOTES"))
+        leftPageHeading:Show()
+        frame.AmmoFooter:Show()
         SetCompanionRecordShown(true)
         self:PopulateText(frame.InfoText)
     end, "Gear Guidelines", "View level-based Hunter gearing priorities for leveling or max-level content.")
 
-    self:CreateSpecTab(frame, T("Macros"), 231, -593, 110, function()
+    self:CreateSpecTab(frame, T("Macros"), 306, -548, 110, function()
         frame.GearContainer:Hide()
         frame.PetMatrixContainer:Hide()
         frame.OptionsContainer:Hide()
         frame.MacroContainer:Show()
+        leftPageHeading:SetText(T("Macros"))
+        leftPageHeading:Show()
+        frame.AmmoFooter:Hide()
         SetCompanionRecordShown(false)
         self:RefreshMacroPage(frame.MacroContainer)
     end, "Simple Hunter Macros", "Add or remove practical Classic Hunter macros in your character macro list.")
 
-    self:CreateSpecTab(frame, T("Pet Skills"), 359, -593, 110, function()
+    self:CreateSpecTab(frame, T("Pet Skills"), 434, -548, 110, function()
         frame.GearContainer:Hide()
         frame.MacroContainer:Hide()
         frame.OptionsContainer:Hide()
         frame.PetMatrixContainer:Show()
+        leftPageHeading:SetText(T("FIELD NOTES"))
+        leftPageHeading:Show()
+        frame.AmmoFooter:Hide()
         SetCompanionRecordShown(true)
         RefreshPetSkills()
     end, "Pet Ability Guide", "See which family abilities and ranks are available at your pet's level, including where to learn them.")
 
-    self:CreateSpecTab(frame, T("Options"), 487, -593, 110, function()
+    self:CreateSpecTab(frame, T("Options"), 562, -548, 110, function()
         frame.GearContainer:Hide()
         frame.MacroContainer:Hide()
         frame.PetMatrixContainer:Hide()
         frame.OptionsContainer:Show()
+        leftPageHeading:Hide()
+        frame.AmmoFooter:Hide()
         SetCompanionRecordShown(false)
     end, "Addon Options", "Configure ammo alerts, Multi-Hawk status, and cooldown tracking.")
 
